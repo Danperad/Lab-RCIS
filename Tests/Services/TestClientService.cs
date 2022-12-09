@@ -1,9 +1,9 @@
 using LabsDB.Entity;
-using MainApp.Interfaces;
+using MainApp.Repositories;
 
 namespace Tests.Services;
 
-public class TestClientService : IClientService
+public class TestClientService : IClientRepository
 {
     public IEnumerable<House> GetAllHouses()
     {

@@ -1,5 +1,5 @@
 using LabsDB.Entity;
-using MainApp.Interfaces;
+using MainApp.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainApp.Controllers;
@@ -8,9 +8,9 @@ namespace MainApp.Controllers;
 [Route("/client")]
 public class ClientController : ControllerBase
 {
-    private readonly IClientService _clientService;
+    private readonly IClientRepository _clientService;
 
-    public ClientController(IClientService clientService)
+    public ClientController(IClientRepository clientService)
     {
         _clientService = clientService;
     }

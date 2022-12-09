@@ -19,7 +19,7 @@ public class Indication
         Employee = new Employee();
     }
 
-    public Indication(string title, House house, Employee employee)
+    public Indication(string title, double value, House house, Employee employee)
     {
         TimeStamp = DateTime.Now;
         Title = title;

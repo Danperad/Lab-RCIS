@@ -1,5 +1,5 @@
 using MainApp.Controllers;
-using MainApp.Interfaces;
+using MainApp.Repositories;
 using MainApp.Services;
 
 namespace MainApp;
@@ -11,8 +11,8 @@ public class Program
 
         builder.Services.AddControllers();
         builder.Services.AddGrpc();
-        builder.Services.AddTransient<IAgentService, AgentService>();
-        builder.Services.AddTransient<IClientService, ClientService>();
+        builder.Services.AddTransient<IAgentRepository, AgentService>();
+        builder.Services.AddTransient<IClientRepository, ClientService>();
         var app = builder.Build();
 
         app.MapGrpcService<AgentController>();

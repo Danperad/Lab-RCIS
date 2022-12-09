@@ -1,9 +1,9 @@
 using LabsDB.Entity;
-using MainApp.Interfaces;
+using MainApp.Repositories;
 
 namespace MainApp.Services;
 
-public class AgentService : IAgentService
+public class AgentService : IAgentRepository
 {
     public bool AddNewIndication(Indication indication)
     {

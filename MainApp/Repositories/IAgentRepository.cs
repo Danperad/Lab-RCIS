@@ -1,8 +1,8 @@
 using LabsDB.Entity;
 
-namespace MainApp.Interfaces;
+namespace MainApp.Repositories;
 
-public interface IAgentService
+public interface IAgentRepository
 {
     bool AddNewIndication(Indication indication);
     Employee? AuthEmployee(string login, string password);
