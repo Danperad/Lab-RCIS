@@ -109,4 +109,20 @@ public class MainAppRepositoriesTest
         var service = new AgentService(_context);
         return service.AuthEmployee(login, password) is null;
     }
+
+    [TestCase(1, ExpectedResult = false)]
+    [TestCase(15, ExpectedResult = true)]
+    public bool GetHouseById(int id)
+    {
+        var service = new AgentService(_context);
+        return service.GetHouseById(id) is null;
+    }
+    
+    [TestCase(1, ExpectedResult = false)]
+    [TestCase(15, ExpectedResult = true)]
+    public bool GetEmployeeById(int id)
+    {
+        var service = new AgentService(_context);
+        return service.GetEmployeeById(id) is null;
+    }
 }
