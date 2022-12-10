@@ -14,21 +14,34 @@ public class AgentService : IAgentRepository
 
     public bool AddNewIndication(Indication indication)
     {
-        throw new NotImplementedException();
+        if (indication is null || string.IsNullOrWhiteSpace(indication.Title) ||
+            !_context.Houses.Any(h => h.Id == indication.HouseId) ||
+            !_context.Employees.Any(e => e.Id == indication.EmployeeId) || indication.Value <= 0) return false;
+        try
+        {
+            _context.Add(indication);
+            _context.SaveChanges();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
     }
 
     public Employee? AuthEmployee(string login, string password)
     {
-        throw new NotImplementedException();
+        return _context.Employees.FirstOrDefault(e => e.Login == login && e.Password == password);
     }
 
     public House? GetHouseById(int id)
     {
-        throw new NotImplementedException();
+        return _context.Houses.FirstOrDefault(h => h.Id == id);
     }
 
     public Employee? GetEmployeeById(int id)
     {
-        throw new NotImplementedException();
+        return _context.Employees.FirstOrDefault(e => e.Id == id);
     }
 }

@@ -12,6 +12,7 @@ public class Indication
 
     public Indication(string title, double value, House house, Employee employee)
     {
+        Value = value;
         TimeStamp = DateTime.Now;
         Title = title;
         House = house;

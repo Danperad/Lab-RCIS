@@ -9,16 +9,17 @@ namespace Tests.MainAppTests;
 public class MainAppMockTest
 {
     private readonly IEnumerable<House> _testHouses;
+    private readonly Employee _employee;
 
     public MainAppMockTest()
     {
         var testHouses = new List<House>();
-        var e = new Employee {Id = 1, Login = "Test", Password = "Test"};
+        _employee = new Employee {Id = 1, Login = "Test", Password = "Test"};
         for (var i = 1; i < 3; i++)
         {
             var home = new House {Id = i};
-            var ind0 = new Indication("Свет", 100 * i, home, e);
-            var ind1 = new Indication("Вода", 200 * i, home, e);
+            var ind0 = new Indication("Свет", 100 * i, home, _employee);
+            var ind1 = new Indication("Вода", 200 * i, home, _employee);
             home.Indications.Add(ind0);
             home.Indications.Add(ind1);
             testHouses.Add(home);
@@ -42,8 +43,10 @@ public class MainAppMockTest
     {
         var mock = new Mock<IAgentRepository>();
         mock.Setup(r => r.AddNewIndication(It.IsNotNull<Indication>())).Returns(true);
+        mock.Setup(r => r.GetEmployeeById(It.IsAny<int>())).Returns(_employee);
+        mock.Setup(r => r.GetHouseById(It.IsAny<int>())).Returns(_testHouses.First(h => h.Id == 1));
         var agentController = new AgentController(mock.Object);
-        var res = agentController.AddNewIndication(new NewRequest());
+        var res = agentController.AddNewIndication(new NewRequest{Title = "t", House = 1, NowEmployee = 1, Value = 1});
         Assert.That(res.Res, Is.True);
     }
 
@@ -89,14 +92,24 @@ public class MainAppMockTest
         Assert.That(res.Res, Is.False);
     }
 
-    [TestCase("   ", ExpectedResult = false)]
-    [TestCase(null, ExpectedResult = false)]
-    public bool AddNewIndicationWithEmptyString(string res)
+    [Test]
+    public void AddNewIndicationWithEmptyString()
     {
         var mock = new Mock<IAgentRepository>();
         mock.Setup(r => r.AddNewIndication(It.Is<Indication>(i => !string.IsNullOrWhiteSpace(i.Title)))).Returns(true);
         var agentController = new AgentController(mock.Object);
-        return agentController.AddNewIndication(new NewRequest {Title = res}).Res;
+        var res = agentController.AddNewIndication(new NewRequest {Title = "  "}).Res;
+        Assert.That(res, Is.False);
+    }
+    
+    [Test]
+    public void AddNewIndicationWithNullString()
+    {
+        var mock = new Mock<IAgentRepository>();
+        mock.Setup(r => r.AddNewIndication(It.Is<Indication>(i => !string.IsNullOrWhiteSpace(i.Title)))).Returns(true);
+        var agentController = new AgentController(mock.Object);
+        NewRequest? requst = null;
+        Assert.Catch<ArgumentNullException>(() => requst = new NewRequest {Title = null});
     }
 
     [Test]
@@ -113,10 +126,7 @@ public class MainAppMockTest
     [TestCase("   ", "test")]
     [TestCase("test", "    ")]
     [TestCase("   ", "    ")]
-    [TestCase(null, "test")]
-    [TestCase("test", null)]
-    [TestCase(null, null)]
-    public void AuthWithErrorData(string login, string password)
+    public void AuthWithEmptyData(string login, string password)
     {
         var mock = new Mock<IAgentRepository>();
         mock.Setup(r => r.AuthEmployee(It.Is<string>(s => !string.IsNullOrWhiteSpace(s)),
@@ -124,6 +134,20 @@ public class MainAppMockTest
             .Returns(new Employee {Id = 1, Login = "Test", Password = "Test"});
         var agentController = new AgentController(mock.Object);
         var res = agentController.Auth(new AuthRequest {Login = login, Password = password});
-        Assert.That(res, Is.Null);
+        Assert.That(res.Id, Is.EqualTo(-1));
+    }
+    
+    [TestCase(null, "test")]
+    [TestCase("test", null)]
+    [TestCase(null, null)]
+    public void AuthWithNullData(string login, string password)
+    {
+        var mock = new Mock<IAgentRepository>();
+        mock.Setup(r => r.AuthEmployee(It.Is<string>(s => !string.IsNullOrWhiteSpace(s)),
+                It.Is<string>(s => !string.IsNullOrWhiteSpace(s))))
+            .Returns(new Employee {Id = 1, Login = "Test", Password = "Test"});
+        var agentController = new AgentController(mock.Object);
+        Assert.Catch<ArgumentNullException>(() =>
+            agentController.Auth(new AuthRequest {Login = login, Password = password}));
     }
 }

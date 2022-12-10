@@ -1,5 +1,6 @@
 using LabsDB.Entity;
 using MainApp.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApp.Services;
 
@@ -14,6 +15,6 @@ public class ClientService : IClientRepository
 
     public IEnumerable<House> GetAllHouses()
     {
-        throw new NotImplementedException();
+        return _context.Houses.Include(h => h.Indications);
     }
 }

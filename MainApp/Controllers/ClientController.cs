@@ -18,6 +18,6 @@ public class ClientController : ControllerBase
     [HttpGet("get")]
     public IEnumerable<House> GetHouses()
     {
-        throw new NotImplementedException();
+        return _clientService.GetAllHouses();
     }
 }
