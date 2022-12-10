@@ -2,10 +2,6 @@ namespace LabsDB.Entity;
 
 public class Employee
 {
-    public int Id { get; set; }
-    public string Login { get; set; }
-    public string Password { get; set; }
-
     public Employee()
     {
         Login = string.Empty;
@@ -17,4 +13,8 @@ public class Employee
         Login = login;
         Password = password;
     }
+
+    public int Id { get; set; }
+    public string Login { get; set; }
+    public string Password { get; set; }
 }

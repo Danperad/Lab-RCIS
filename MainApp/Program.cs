@@ -3,6 +3,7 @@ using MainApp.Repositories;
 using MainApp.Services;
 
 namespace MainApp;
+
 public class Program
 {
     public static void Main(string[] args)

@@ -1,5 +1,5 @@
 using Grpc.Core;
-using LabsDB.Entity;
+using LabsDb.Agent;
 using MainApp.Repositories;
 
 namespace MainApp.Controllers;

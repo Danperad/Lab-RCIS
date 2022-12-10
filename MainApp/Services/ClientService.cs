@@ -11,6 +11,7 @@ public class ClientService : IClientRepository
     {
         _context = context;
     }
+
     public IEnumerable<House> GetAllHouses()
     {
         throw new NotImplementedException();

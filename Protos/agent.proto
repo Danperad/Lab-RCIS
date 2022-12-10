@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option csharp_namespace = "MainApp";
+option csharp_namespace = "LabsDb.Agent";
 
-package agent;
+package labsdb.agent;
 
 service Agent {
   rpc Auth (AuthRequest) returns (ResponseEmployee);

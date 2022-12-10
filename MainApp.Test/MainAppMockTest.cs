@@ -1,10 +1,10 @@
+using LabsDb.Agent;
 using LabsDB.Entity;
-using MainApp;
 using MainApp.Controllers;
 using MainApp.Repositories;
 using Moq;
 
-namespace Tests.MainApp;
+namespace Tests.MainAppTests;
 
 public class MainAppMockTest
 {
@@ -65,7 +65,7 @@ public class MainAppMockTest
         var mock = new Mock<IAgentRepository>();
         mock.Setup(r => r.AddNewIndication(It.Is<Indication>(i => i.HouseId > 0))).Returns(true);
         var agentController = new AgentController(mock.Object);
-        var res = agentController.AddNewIndication(new NewRequest{House = -1});
+        var res = agentController.AddNewIndication(new NewRequest {House = -1});
         Assert.That(res.Res, Is.False);
     }
 
@@ -106,7 +106,7 @@ public class MainAppMockTest
         mock.Setup(r => r.AuthEmployee(It.IsAny<string>(), It.IsAny<string>()))
             .Returns(new Employee {Id = 1, Login = "Test", Password = "Test"});
         var agentController = new AgentController(mock.Object);
-        var res = agentController.Auth(new AuthRequest{Login = "Test", Password = "Test"});
+        var res = agentController.Auth(new AuthRequest {Login = "Test", Password = "Test"});
         Assert.That(res, Is.Not.Null);
     }
 
@@ -123,7 +123,7 @@ public class MainAppMockTest
                 It.Is<string>(s => !string.IsNullOrWhiteSpace(s))))
             .Returns(new Employee {Id = 1, Login = "Test", Password = "Test"});
         var agentController = new AgentController(mock.Object);
-        var res = agentController.Auth(new AuthRequest{Login = login, Password = password});
+        var res = agentController.Auth(new AuthRequest {Login = login, Password = password});
         Assert.That(res, Is.Null);
     }
 }

@@ -2,15 +2,6 @@ namespace LabsDB.Entity;
 
 public class Indication
 {
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public double Value { get; set; }
-    public DateTime TimeStamp { get; set; }
-    public House House { get; set; }
-    public int HouseId { get; set; }
-    public Employee Employee { get; set; }
-    public int EmployeeId { get; set; }
-
     public Indication()
     {
         Title = string.Empty;
@@ -28,4 +19,13 @@ public class Indication
         Employee = employee;
         EmployeeId = employee.Id;
     }
+
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public double Value { get; set; }
+    public DateTime TimeStamp { get; set; }
+    public House House { get; set; }
+    public int HouseId { get; set; }
+    public Employee Employee { get; set; }
+    public int EmployeeId { get; set; }
 }

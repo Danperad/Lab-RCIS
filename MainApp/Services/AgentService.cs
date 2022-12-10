@@ -11,6 +11,7 @@ public class AgentService : IAgentRepository
     {
         _context = context;
     }
+
     public bool AddNewIndication(Indication indication)
     {
         throw new NotImplementedException();

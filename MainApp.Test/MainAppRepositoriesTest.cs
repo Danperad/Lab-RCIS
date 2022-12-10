@@ -3,11 +3,11 @@ using MainApp;
 using MainApp.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace Tests.MainApp;
+namespace Tests.MainAppTests;
 
 public class MainAppRepositoriesTest
 {
-    private ApplicationContext _context;
+    private readonly ApplicationContext _context;
 
     public MainAppRepositoriesTest()
     {
@@ -117,7 +117,7 @@ public class MainAppRepositoriesTest
         var service = new AgentService(_context);
         return service.GetHouseById(id) is null;
     }
-    
+
     [TestCase(1, ExpectedResult = false)]
     [TestCase(15, ExpectedResult = true)]
     public bool GetEmployeeById(int id)
