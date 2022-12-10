@@ -5,6 +5,12 @@ namespace MainApp.Services;
 
 public class AgentService : IAgentRepository
 {
+    private ApplicationContext _context;
+
+    public AgentService(ApplicationContext context)
+    {
+        _context = context;
+    }
     public bool AddNewIndication(Indication indication)
     {
         throw new NotImplementedException();

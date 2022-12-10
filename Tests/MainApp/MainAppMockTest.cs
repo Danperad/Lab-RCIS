@@ -44,7 +44,7 @@ public class MainAppMockTest
         mock.Setup(r => r.AddNewIndication(It.IsNotNull<Indication>())).Returns(true);
         var agentController = new AgentController(mock.Object);
         var res = agentController.AddNewIndication(new NewRequest());
-        Assert.That(res, Is.True);
+        Assert.That(res.Res, Is.True);
     }
 
     [Test]
@@ -53,8 +53,10 @@ public class MainAppMockTest
         var mock = new Mock<IAgentRepository>();
         mock.Setup(r => r.AddNewIndication(It.IsNotNull<Indication>())).Returns(true);
         var agentController = new AgentController(mock.Object);
+#pragma warning disable CS8625
         var res = agentController.AddNewIndication(null);
-        Assert.That(res, Is.False);
+#pragma warning restore CS8625
+        Assert.That(res.Res, Is.False);
     }
 
     [Test]
@@ -64,7 +66,7 @@ public class MainAppMockTest
         mock.Setup(r => r.AddNewIndication(It.Is<Indication>(i => i.HouseId > 0))).Returns(true);
         var agentController = new AgentController(mock.Object);
         var res = agentController.AddNewIndication(new NewRequest{House = -1});
-        Assert.That(res, Is.False);
+        Assert.That(res.Res, Is.False);
     }
 
     [Test]
@@ -74,7 +76,7 @@ public class MainAppMockTest
         mock.Setup(r => r.AddNewIndication(It.Is<Indication>(i => i.EmployeeId > 0))).Returns(true);
         var agentController = new AgentController(mock.Object);
         var res = agentController.AddNewIndication(new NewRequest {NowEmployee = -1});
-        Assert.That(res, Is.False);
+        Assert.That(res.Res, Is.False);
     }
 
     [Test]
@@ -84,7 +86,7 @@ public class MainAppMockTest
         mock.Setup(r => r.AddNewIndication(It.Is<Indication>(i => i.Value > 0))).Returns(true);
         var agentController = new AgentController(mock.Object);
         var res = agentController.AddNewIndication(new NewRequest {Value = -1});
-        Assert.That(res, Is.False);
+        Assert.That(res.Res, Is.False);
     }
 
     [TestCase("   ", ExpectedResult = false)]

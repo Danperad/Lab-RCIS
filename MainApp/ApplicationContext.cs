@@ -1,7 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LabsDB.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApp;
 
 public class ApplicationContext : DbContext
 {
+    public DbSet<Employee> Employees { get; set; } = null!;
+    public DbSet<House> Houses { get; set; } = null!;
+    public DbSet<Indication> Indications { get; set; } = null!;
+    public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
+    {
+    }
 }

@@ -6,11 +6,11 @@ namespace MainApp.Controllers;
 
 public class AgentController : Agent.AgentBase
 {
-    private readonly IAgentRepository _agentService;
+    private readonly IAgentRepository _agentRepository;
 
-    public AgentController(IAgentRepository agentService)
+    public AgentController(IAgentRepository agentRepository)
     {
-        _agentService = agentService;
+        _agentRepository = agentRepository;
     }
 
     public ResponseEmployee Auth(AuthRequest request)
