@@ -32,16 +32,19 @@ public class AgentService : IAgentRepository
 
     public Employee? AuthEmployee(string login, string password)
     {
+        if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password)) return null;
         return _context.Employees.FirstOrDefault(e => e.Login == login && e.Password == password);
     }
 
     public House? GetHouseById(int id)
     {
+        if (id <= 0) return null;
         return _context.Houses.FirstOrDefault(h => h.Id == id);
     }
 
     public Employee? GetEmployeeById(int id)
     {
+        if (id <= 0) return null;
         return _context.Employees.FirstOrDefault(e => e.Id == id);
     }
 }
