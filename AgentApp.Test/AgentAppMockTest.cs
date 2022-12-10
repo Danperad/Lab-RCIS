@@ -1,6 +1,7 @@
 using AgentApp;
 using AgentApp.Repository;
 using LabsDb.Agent;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Agent.Test;
@@ -31,20 +32,33 @@ public class AgentAppMockTest
 
     [TestCase("  ", "test")]
     [TestCase("test", "  ")]
-    [TestCase(null, "test")]
-    [TestCase("test", null)]
-    [TestCase(null, null)]
-    public async Task AuthWithErrorData(string login, string password)
+    public async Task AuthWithEmptyData(string login, string password)
     {
         var mock = new Mock<IAgentRepository>();
         mock.Setup(s =>
             s.Auth(It.Is<AuthRequest>(
-                r => !string.IsNullOrWhiteSpace(r.Login) || !string.IsNullOrWhiteSpace(r.Password)))).Returns(
+                r => string.IsNullOrWhiteSpace(r.Login) || string.IsNullOrWhiteSpace(r.Password)))).Returns(
             Task.FromResult(new ResponseEmployee
                 {Id = -1, Login = "", Password = ""}));
         var worker = new Worker(mock.Object);
-        var res = await worker.Auth(new AuthRequest{Login = login, Password = password});
+        var res = await worker.Auth(new AuthRequest {Login = login, Password = password});
         Assert.That(res.Id, Is.EqualTo(-1));
+    }
+
+    [TestCase(null, "test")]
+    [TestCase("test", null)]
+    [TestCase(null, null)]
+    public void AuthWithNullData(string login, string password)
+    {
+        var mock = new Mock<IAgentRepository>();
+        mock.Setup(s =>
+            s.Auth(It.Is<AuthRequest>(
+                r => string.IsNullOrWhiteSpace(r.Login) || string.IsNullOrWhiteSpace(r.Password)))).Returns(
+            Task.FromResult(new ResponseEmployee
+                {Id = -1, Login = "", Password = ""}));
+        var worker = new Worker(mock.Object);
+        AuthRequest? req = null;
+        Assert.Catch<ArgumentNullException>(() => req = new AuthRequest {Login = login, Password = password});
     }
 
     [Test]
@@ -58,7 +72,7 @@ public class AgentAppMockTest
             {House = 1, NowEmployee = 1, Title = "Test", Value = 2.0D});
         Assert.That(res.Res, Is.True);
     }
-    
+
     [Test]
     public async Task AddNewIndicationWithNull()
     {
@@ -69,7 +83,7 @@ public class AgentAppMockTest
         var res = await worker.AddNewIndication(null);
         Assert.That(res.Res, Is.False);
     }
-    
+
     [Test]
     public async Task AddNewIndicationWithErrorHouse()
     {
@@ -81,7 +95,7 @@ public class AgentAppMockTest
             {House = -1, NowEmployee = 1, Title = "Test", Value = 2.0D});
         Assert.That(res.Res, Is.False);
     }
-    
+
     [Test]
     public async Task AddNewIndicationWithErrorEmployee()
     {
@@ -93,7 +107,7 @@ public class AgentAppMockTest
             {House = 1, NowEmployee = -1, Title = "Test", Value = 2.0D});
         Assert.That(res.Res, Is.False);
     }
-    
+
     [Test]
     public async Task AddNewIndicationWithErrorValue()
     {
@@ -105,17 +119,28 @@ public class AgentAppMockTest
             {House = 1, NowEmployee = 1, Title = "Test", Value = -2.0D});
         Assert.That(res.Res, Is.False);
     }
-    
-    [TestCase("  ")]
-    [TestCase(null)]
-    public async Task AddNewIndicationWithErrorTitle(string title)
+
+    [Test]
+    public async Task AddNewIndicationWithEmptyTitle()
     {
         var mock = new Mock<IAgentRepository>();
         mock.Setup(s => s.AddNewIndication(It.Is<NewRequest>(r => !string.IsNullOrWhiteSpace(r.Title))))
             .Returns(Task.FromResult(new NewResponse {Res = true}));
         var worker = new Worker(mock.Object);
         var res = await worker.AddNewIndication(new NewRequest
-            {House = 1, NowEmployee = 1, Title = title, Value = 2.0D});
+            {House = 1, NowEmployee = 1, Title = "   ", Value = 2.0D});
         Assert.That(res.Res, Is.False);
+    }
+
+    [Test]
+    public void AddNewIndicationWithNullTitle()
+    {
+        var mock = new Mock<IAgentRepository>();
+        mock.Setup(s => s.AddNewIndication(It.Is<NewRequest>(r => !string.IsNullOrWhiteSpace(r.Title))))
+            .Returns(Task.FromResult(new NewResponse {Res = true}));
+        var worker = new Worker(mock.Object);
+        NewRequest? request = null;
+        Assert.Catch<ArgumentNullException>(() => request = new NewRequest
+            {House = 1, NowEmployee = 1, Title = null, Value = 2.0D});
     }
 }

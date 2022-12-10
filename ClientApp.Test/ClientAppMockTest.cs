@@ -29,12 +29,12 @@ public class ClientAppMockTest
     }
 
     [Test]
-    public void GetHouseSuccess()
+    public async Task GetHouseSuccess()
     {
         var mock = new Mock<IClientRepository>();
-        mock.Setup(s => s.GetAllHouses()).Returns(_testHouses);
+        mock.Setup(s => s.GetAllHouses()).Returns(Task.FromResult(_testHouses));
         var controller = new HomeController(mock.Object);
-        var actionResult = controller.Index();
+        var actionResult = await controller.Index();
         Assert.That(actionResult, Is.TypeOf<ViewResult>());
         var viewResult = (ViewResult) actionResult;
         Assert.That(viewResult.ViewData.Model, Is.TypeOf<HouseViewModel>());
@@ -43,12 +43,12 @@ public class ClientAppMockTest
     }
 
     [Test]
-    public void GetHouseServerError()
+    public async Task GetHouseServerError()
     {
         var mock = new Mock<IClientRepository>();
-        mock.Setup(s => s.GetAllHouses()).Returns(new List<House>());
+        mock.Setup(s => s.GetAllHouses()).Returns(Task.FromResult(Enumerable.Empty<House>()));
         var controller = new HomeController(mock.Object);
-        var actionResult = controller.Index();
+        var actionResult = await controller.Index();
         Assert.That(actionResult, Is.TypeOf<ViewResult>());
         var viewResult = (ViewResult) actionResult;
         Assert.That(viewResult.ViewData.Model, Is.TypeOf<HouseViewModel>());

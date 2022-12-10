@@ -4,5 +4,5 @@ namespace ClientApp.Repositories;
 
 public interface IClientRepository
 {
-    IEnumerable<House> GetAllHouses();
+    Task<IEnumerable<House>> GetAllHouses();
 }

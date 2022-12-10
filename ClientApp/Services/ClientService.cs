@@ -1,3 +1,4 @@
+using System.Text.Json;
 using ClientApp.Repositories;
 using LabsDB.Entity;
 
@@ -11,8 +12,23 @@ public class ClientService : IClientRepository
     {
         _httpClientFactory = httpClientFactory;
     }
-    public IEnumerable<House> GetAllHouses()
+    public async Task<IEnumerable<House>> GetAllHouses()
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient();
+        try
+        {
+            var responseMessage = await client.GetAsync("http://localhost:5174/client/get");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return JsonSerializer.Deserialize<IEnumerable<House>>(await responseMessage.Content
+                    .ReadAsStringAsync()) ?? Enumerable.Empty<House>();
+            }
+            return Enumerable.Empty<House>();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return Enumerable.Empty<House>();
+        }
     }
 }

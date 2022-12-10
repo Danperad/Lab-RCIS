@@ -19,6 +19,8 @@ public class ClientAppRepositoriesTest
             var home = new House {Id = i};
             var ind0 = new Indication("Свет", 100 * i, home, e);
             var ind1 = new Indication("Вода", 200 * i, home, e);
+            ind0.House = null;
+            ind1.House = null;
             home.Indications.Add(ind0);
             home.Indications.Add(ind1);
             testHouses.Add(home);
@@ -64,25 +66,25 @@ public class ClientAppRepositoriesTest
     }
     
     [Test]
-    public void GetHouseHttpSuccess()
+    public async Task GetHouseHttpSuccess()
     {
         var clientHandlerStub = new DelegatingHandlerStub(_testHouses);
         var client = new HttpClient(clientHandlerStub);
         var mock = new Mock<IHttpClientFactory>();
         mock.Setup(r => r.CreateClient(It.IsAny<string>())).Returns(client);
         var service = new ClientService(mock.Object);
-        var res = service.GetAllHouses();
+        var res = await service.GetAllHouses();
         Assert.That(res.Count(), Is.EqualTo(_testHouses.Count()));
     }
     
     [Test]
-    public void GetHouseHttpError()
+    public async Task GetHouseHttpError()
     {
         var client = new HttpClient();
         var mock = new Mock<IHttpClientFactory>();
         mock.Setup(r => r.CreateClient(It.IsAny<string>())).Returns(client);
         var service = new ClientService(mock.Object);
-        var res = service.GetAllHouses();
+        var res = await service.GetAllHouses();
         Assert.That(res.Count(), Is.EqualTo(0));
     }
 }

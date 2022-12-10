@@ -14,10 +14,9 @@ public class HomeController : Controller
         _clientRepository = clientRepository;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        throw new NotImplementedException();
-        return View(new HouseViewModel(){Houses = _clientRepository.GetAllHouses()});
+        return View(new HouseViewModel{Houses = await _clientRepository.GetAllHouses()});
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
