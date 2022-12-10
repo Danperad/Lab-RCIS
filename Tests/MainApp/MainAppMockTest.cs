@@ -1,4 +1,5 @@
 using LabsDB.Entity;
+using MainApp;
 using MainApp.Controllers;
 using MainApp.Repositories;
 using Moq;
@@ -42,7 +43,7 @@ public class MainAppMockTest
         var mock = new Mock<IAgentRepository>();
         mock.Setup(r => r.AddNewIndication(It.IsNotNull<Indication>())).Returns(true);
         var agentController = new AgentController(mock.Object);
-        var res = agentController.AddNewIndication(new Indication());
+        var res = agentController.AddNewIndication(new NewRequest());
         Assert.That(res, Is.True);
     }
 
@@ -62,7 +63,7 @@ public class MainAppMockTest
         var mock = new Mock<IAgentRepository>();
         mock.Setup(r => r.AddNewIndication(It.Is<Indication>(i => i.HouseId > 0))).Returns(true);
         var agentController = new AgentController(mock.Object);
-        var res = agentController.AddNewIndication(new Indication {HouseId = -1});
+        var res = agentController.AddNewIndication(new NewRequest{House = -1});
         Assert.That(res, Is.False);
     }
 
@@ -72,7 +73,7 @@ public class MainAppMockTest
         var mock = new Mock<IAgentRepository>();
         mock.Setup(r => r.AddNewIndication(It.Is<Indication>(i => i.EmployeeId > 0))).Returns(true);
         var agentController = new AgentController(mock.Object);
-        var res = agentController.AddNewIndication(new Indication {EmployeeId = -1});
+        var res = agentController.AddNewIndication(new NewRequest {NowEmployee = -1});
         Assert.That(res, Is.False);
     }
 
@@ -82,7 +83,7 @@ public class MainAppMockTest
         var mock = new Mock<IAgentRepository>();
         mock.Setup(r => r.AddNewIndication(It.Is<Indication>(i => i.Value > 0))).Returns(true);
         var agentController = new AgentController(mock.Object);
-        var res = agentController.AddNewIndication(new Indication {Value = -1});
+        var res = agentController.AddNewIndication(new NewRequest {Value = -1});
         Assert.That(res, Is.False);
     }
 
@@ -93,7 +94,7 @@ public class MainAppMockTest
         var mock = new Mock<IAgentRepository>();
         mock.Setup(r => r.AddNewIndication(It.Is<Indication>(i => !string.IsNullOrWhiteSpace(i.Title)))).Returns(true);
         var agentController = new AgentController(mock.Object);
-        return agentController.AddNewIndication(new Indication {Title = res});
+        return agentController.AddNewIndication(new NewRequest {Title = res}).Res;
     }
 
     [Test]
@@ -103,7 +104,7 @@ public class MainAppMockTest
         mock.Setup(r => r.AuthEmployee(It.IsAny<string>(), It.IsAny<string>()))
             .Returns(new Employee {Id = 1, Login = "Test", Password = "Test"});
         var agentController = new AgentController(mock.Object);
-        var res = agentController.Auth("Test", "Test");
+        var res = agentController.Auth(new AuthRequest{Login = "Test", Password = "Test"});
         Assert.That(res, Is.Not.Null);
     }
 
@@ -120,7 +121,7 @@ public class MainAppMockTest
                 It.Is<string>(s => !string.IsNullOrWhiteSpace(s))))
             .Returns(new Employee {Id = 1, Login = "Test", Password = "Test"});
         var agentController = new AgentController(mock.Object);
-        var res = agentController.Auth(login, password);
+        var res = agentController.Auth(new AuthRequest{Login = login, Password = password});
         Assert.That(res, Is.Null);
     }
 }
