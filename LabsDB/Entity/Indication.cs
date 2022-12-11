@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace LabsDB.Entity;
 
 public class Indication
@@ -21,12 +23,12 @@ public class Indication
         EmployeeId = employee.Id;
     }
 
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public double Value { get; set; }
-    public DateTime TimeStamp { get; set; }
+    [JsonPropertyName("id")] public int Id { get; set; }
+    [JsonPropertyName("title")] public string Title { get; set; }
+    [JsonPropertyName("value")] public double Value { get; set; }
+    [JsonPropertyName("timeStamp")] public DateTime TimeStamp { get; set; }
     public House House { get; set; }
-    public int HouseId { get; set; }
+    [JsonPropertyName("houseId")] public int HouseId { get; set; }
     public Employee Employee { get; set; }
-    public int EmployeeId { get; set; }
+    [JsonPropertyName("employeeId")] public int EmployeeId { get; set; }
 }

@@ -28,12 +28,36 @@ public class ClientAppRepositoriesTest
 
         _testHouses = testHouses;
     }
-    
-    public class DelegatingHandlerStub : DelegatingHandler {
+
+    [Test]
+    public async Task GetHouseHttpSuccess()
+    {
+        var clientHandlerStub = new DelegatingHandlerStub(_testHouses);
+        var client = new HttpClient(clientHandlerStub);
+        var mock = new Mock<IHttpClientFactory>();
+        mock.Setup(r => r.CreateClient(It.IsAny<string>())).Returns(client);
+        var service = new ClientService(mock.Object);
+        var res = await service.GetAllHouses();
+        Assert.That(res.Count(), Is.EqualTo(_testHouses.Count()));
+    }
+
+    [Test]
+    public async Task GetHouseHttpError()
+    {
+        var client = new HttpClient();
+        var mock = new Mock<IHttpClientFactory>();
+        mock.Setup(r => r.CreateClient(It.IsAny<string>())).Returns(client);
+        var service = new ClientService(mock.Object);
+        var res = await service.GetAllHouses();
+        Assert.That(res.Count(), Is.EqualTo(0));
+    }
+
+    public class DelegatingHandlerStub : DelegatingHandler
+    {
         private readonly Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> _handlerFunc;
+
         public DelegatingHandlerStub()
         {
-            
             _handlerFunc = (request, cancellationToken) =>
             {
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
@@ -56,35 +80,15 @@ public class ClientAppRepositoriesTest
             };
         }
 
-        public DelegatingHandlerStub(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> handlerFunc) {
+        public DelegatingHandlerStub(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> handlerFunc)
+        {
             _handlerFunc = handlerFunc;
         }
 
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+            CancellationToken cancellationToken)
+        {
             return _handlerFunc(request, cancellationToken);
         }
-    }
-    
-    [Test]
-    public async Task GetHouseHttpSuccess()
-    {
-        var clientHandlerStub = new DelegatingHandlerStub(_testHouses);
-        var client = new HttpClient(clientHandlerStub);
-        var mock = new Mock<IHttpClientFactory>();
-        mock.Setup(r => r.CreateClient(It.IsAny<string>())).Returns(client);
-        var service = new ClientService(mock.Object);
-        var res = await service.GetAllHouses();
-        Assert.That(res.Count(), Is.EqualTo(_testHouses.Count()));
-    }
-    
-    [Test]
-    public async Task GetHouseHttpError()
-    {
-        var client = new HttpClient();
-        var mock = new Mock<IHttpClientFactory>();
-        mock.Setup(r => r.CreateClient(It.IsAny<string>())).Returns(client);
-        var service = new ClientService(mock.Object);
-        var res = await service.GetAllHouses();
-        Assert.That(res.Count(), Is.EqualTo(0));
     }
 }

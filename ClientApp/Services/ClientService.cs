@@ -12,18 +12,19 @@ public class ClientService : IClientRepository
     {
         _httpClientFactory = httpClientFactory;
     }
+
     public async Task<IEnumerable<House>> GetAllHouses()
     {
         var client = _httpClientFactory.CreateClient();
         try
         {
             var responseMessage = await client.GetAsync("http://localhost:5174/client/get");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return JsonSerializer.Deserialize<IEnumerable<House>>(await responseMessage.Content
-                    .ReadAsStringAsync()) ?? Enumerable.Empty<House>();
-            }
-            return Enumerable.Empty<House>();
+            if (!responseMessage.IsSuccessStatusCode) 
+                return Enumerable.Empty<House>();
+            
+            var str = await responseMessage.Content.ReadAsStringAsync();
+            var res = JsonSerializer.Deserialize<List<House>>(str);
+            return res ?? Enumerable.Empty<House>();
         }
         catch (Exception e)
         {

@@ -6,6 +6,7 @@ namespace MainApp;
 public class ApplicationContext : DbContext
 {
     private readonly bool _test;
+
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
         _test = false;
@@ -28,6 +29,7 @@ public class ApplicationContext : DbContext
             base.OnModelCreating(modelBuilder);
             return;
         }
+
         var emp = new Employee {Id = 1, Login = "Test", Password = "Test"};
         var houses = new List<House>(new[]
         {

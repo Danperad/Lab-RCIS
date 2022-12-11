@@ -4,7 +4,7 @@ using LabsDb.Agent;
 
 namespace AgentApp.Services;
 
-public class AgentService: IAgentRepository
+public class AgentService : IAgentRepository
 {
     public async Task<ResponseEmployee> Auth(AuthRequest request)
     {

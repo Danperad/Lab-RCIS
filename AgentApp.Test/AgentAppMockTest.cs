@@ -1,7 +1,6 @@
 using AgentApp;
 using AgentApp.Repository;
 using LabsDb.Agent;
-using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Agent.Test;

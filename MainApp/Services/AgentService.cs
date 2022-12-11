@@ -5,7 +5,7 @@ namespace MainApp.Services;
 
 public class AgentService : IAgentRepository
 {
-    private ApplicationContext _context;
+    private readonly ApplicationContext _context;
 
     public AgentService(ApplicationContext context)
     {

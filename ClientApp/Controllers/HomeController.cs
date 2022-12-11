@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using ClientApp.Models;
 using ClientApp.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ClientApp.Controllers;
 
@@ -16,12 +16,6 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        return View(new HouseViewModel{Houses = await _clientRepository.GetAllHouses()});
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+        return View(new HouseViewModel {Houses = await _clientRepository.GetAllHouses()});
     }
 }

@@ -23,33 +23,29 @@ public class Worker : BackgroundService
         if (res.Id == -1) return;
         _employee = new Employee {Id = res.Id, Login = res.Login, Password = res.Password};
         while (!stoppingToken.IsCancellationRequested)
-        {
             try
             {
                 var req = new NewRequest
                 {
                     Title = _titles.Single(), House = new Random().Next(-5, 10), NowEmployee = _employee.Id,
-                    Value = new Random().NextDouble() * new Random().Next(-10,100)
+                    Value = new Random().NextDouble() * new Random().Next(-10, 100)
                 };
                 var resp = await AddNewIndication(req);
-                if (resp.Res) 
+                if (resp.Res)
                     await Task.Delay(3600000, stoppingToken);
-                else 
+                else
                     Console.WriteLine("Don't added");
             }
             catch (ArgumentNullException)
             {
                 Console.WriteLine("Null title");
             }
-        }
     }
 
     public async Task<ResponseEmployee> Auth(AuthRequest request)
     {
         if (request is null || string.IsNullOrWhiteSpace(request.Login) || string.IsNullOrWhiteSpace(request.Password))
-        {
             return new ResponseEmployee {Id = -1, Password = "", Login = ""};
-        }
 
         return await _agentRepository.Auth(request);
     }

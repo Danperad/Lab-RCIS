@@ -4,8 +4,6 @@ namespace ClientApp.Models;
 
 public class HouseViewModel
 {
-    public IEnumerable<House> Houses { get; init; }
-
     public HouseViewModel()
     {
         Houses = new List<House>();
@@ -15,4 +13,6 @@ public class HouseViewModel
     {
         Houses = houses;
     }
+
+    public IEnumerable<House> Houses { get; init; }
 }

@@ -6,7 +6,7 @@ namespace MainApp.Services;
 
 public class ClientService : IClientRepository
 {
-    private ApplicationContext _context;
+    private readonly ApplicationContext _context;
 
     public ClientService(ApplicationContext context)
     {

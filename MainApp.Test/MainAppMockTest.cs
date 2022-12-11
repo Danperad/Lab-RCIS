@@ -8,8 +8,8 @@ namespace Tests.MainAppTests;
 
 public class MainAppMockTest
 {
-    private readonly IEnumerable<House> _testHouses;
     private readonly Employee _employee;
+    private readonly IEnumerable<House> _testHouses;
 
     public MainAppMockTest()
     {
@@ -46,7 +46,7 @@ public class MainAppMockTest
         mock.Setup(r => r.GetEmployeeById(It.IsAny<int>())).Returns(_employee);
         mock.Setup(r => r.GetHouseById(It.IsAny<int>())).Returns(_testHouses.First(h => h.Id == 1));
         var agentController = new AgentController(mock.Object);
-        var res = agentController.AddNewIndication(new NewRequest{Title = "t", House = 1, NowEmployee = 1, Value = 1});
+        var res = agentController.AddNewIndication(new NewRequest {Title = "t", House = 1, NowEmployee = 1, Value = 1});
         Assert.That(res.Res, Is.True);
     }
 
@@ -101,7 +101,7 @@ public class MainAppMockTest
         var res = agentController.AddNewIndication(new NewRequest {Title = "  "}).Res;
         Assert.That(res, Is.False);
     }
-    
+
     [Test]
     public void AddNewIndicationWithNullString()
     {
@@ -136,7 +136,7 @@ public class MainAppMockTest
         var res = agentController.Auth(new AuthRequest {Login = login, Password = password});
         Assert.That(res.Id, Is.EqualTo(-1));
     }
-    
+
     [TestCase(null, "test")]
     [TestCase("test", null)]
     [TestCase(null, null)]

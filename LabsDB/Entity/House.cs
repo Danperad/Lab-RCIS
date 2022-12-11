@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace LabsDB.Entity;
 
 public class House
@@ -7,6 +9,6 @@ public class House
         Indications = new List<Indication>();
     }
 
-    public int Id { get; set; }
-    public List<Indication> Indications { get; set; }
+    [JsonPropertyName("id")] public int Id { get; set; }
+    [JsonPropertyName("indications")] public List<Indication> Indications { get; set; }
 }
