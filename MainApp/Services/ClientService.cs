@@ -15,6 +15,16 @@ public class ClientService : IClientRepository
 
     public IEnumerable<House> GetAllHouses()
     {
-        return _context.Houses.Include(h => h.Indications);
+        var indications = _context.Houses.Include(h => h.Indications).ToList();
+        indications = indications.Select(h =>
+        {
+            h.Indications = h.Indications.Select(i =>
+            {
+                i.House = null;
+                return i;
+            }).ToList();
+            return h;
+        }).ToList();
+        return indications;
     }
 }

@@ -7,17 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Protobuf Include="..\Protos\agent.proto" GrpcServices="Agent"/>
+        <Protobuf Include="..\Protos\agent.proto" GrpcServices="Agent" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.49.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0"/>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\LabsDB\LabsDB.csproj"/>
+        <ProjectReference Include="..\LabsDB\LabsDB.csproj" />
     </ItemGroup>
 
 </Project>
