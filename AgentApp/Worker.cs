@@ -27,7 +27,7 @@ public class Worker : BackgroundService
             {
                 var req = new NewRequest
                 {
-                    Title = _titles.Single(), House = new Random().Next(-5, 10), NowEmployee = _employee.Id,
+                    Title = _titles[new Random().Next(0, _titles.Count)], House = new Random().Next(-5, 10), NowEmployee = _employee.Id,
                     Value = new Random().NextDouble() * new Random().Next(-10, 100)
                 };
                 var resp = await AddNewIndication(req);
